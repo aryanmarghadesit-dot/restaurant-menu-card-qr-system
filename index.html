@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silver Spoons</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#f2f2f2}
+
+header{
+  background:#71706e;
+  color:#fff;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  padding:10px 20px
+}
+.logo{
+  height:80px;
+  width:auto
+}
+header h1{
+  text-align:center;
+  font-size:24px
+}
+.header-space{width:80px}
+
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  background:#fff;
+  padding:8px
+}
+.controls input{padding:8px 14px;border-radius:20px;border:1px solid #ccc;min-width:200px}
+.controls button{padding:8px 14px;border:none;border-radius:20px;background:#eee;cursor:pointer}
+.controls button.active{background:#d32f2f;color:#fff}
+
+.container{display:grid;grid-template-columns:1fr 330px;gap:8px}
+@media(max-width:900px){
+.container{grid-template-columns:1fr}
+.bill{position:relative;height:auto;max-height:400px;overflow:auto;margin-top:8px}
+}
+
+.menu{
+  padding:15px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px
+}
+.card{
+  background:#fff;
+  border-radius:15px;
+  box-shadow:0 6px 18px rgba(0,0,0,.15);
+  overflow:hidden;
+  width:100%;
+  max-width:260px;
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  opacity:0;
+  transform:translateY(40px);
+  transition:.8s
+}
+.card.show{opacity:1;transform:translateY(0)}
+.card img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.card-content{padding:10px;display:flex;flex-direction:column;justify-content:space-between;text-align:center}
+.price{color:#d32f2f;font-weight:bold}
+.add-btn{margin-top:6px;background:#d32f2f;color:#fff;border:none;padding:8px;border-radius:20px;cursor:pointer}
+
+.bill{
+  background:#fff;
+  padding:12px;
+  border-left:2px solid #eee;
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow-y:auto
+}
+.bill h2{text-align:center;margin-bottom:8px}
+.bill input{width:100%;padding:8px;margin-bottom:8px}
+.bill-item{display:flex;justify-content:space-between;align-items:center;margin:5px 0}
+.qty button{padding:2px 7px;margin:0 3px}
+.total{font-weight:bold;font-size:18px;margin-top:8px}
+.submit{width:100%;padding:8px;background:green;color:#fff;border:none;margin-top:6px}
+.clear{width:100%;padding:8px;background:#000;color:#fff;border:none;margin-top:5px}
+</style>
+</head>
+
+<body>
+
+<header>
+<img src="./images/logo.png" class="logo">
+<h1>Silver Spoons</h1>
+<div class="header-space"></div>
+</header>
+
+<div class="controls">
+<input id="search" placeholder="Search food..." onkeyup="applyFilters()">
+<button class="active" onclick="setFilter('all',this)">All</button>
+<button onclick="setFilter('starter',this)">Starters</button>
+<button onclick="setFilter('main',this)">Main</button>
+<button onclick="setFilter('fast',this)">Fast</button>
+<button onclick="setFilter('dessert',this)">Dessert</button>
+</div>
+
+<div class="container">
+<div class="menu">
+
+<div class="card starter"><img src="images/paneer-tikka.jpg"><div class="card-content"><h3>Paneer Tikka</h3><div class="price">₹180</div><button class="add-btn" onclick="addItem('Paneer Tikka',180)">Add</button></div></div>
+<div class="card starter"><img src="images/spring-roll.jpg"><div class="card-content"><h3>Veg Spring Roll</h3><div class="price">₹120</div><button class="add-btn" onclick="addItem('Veg Spring Roll',120)">Add</button></div></div>
+<div class="card starter"><img src="images/manchurian.jpg"><div class="card-content"><h3>Veg Manchurian</h3><div class="price">₹170</div><button class="add-btn" onclick="addItem('Veg Manchurian',170)">Add</button></div></div>
+<div class="card starter"><img src="images/hara-bhara.jpg"><div class="card-content"><h3>Hara Bhara Kabab</h3><div class="price">₹160</div><button class="add-btn" onclick="addItem('Hara Bhara Kabab',160)">Add</button></div></div>
+<div class="card starter"><img src="images/starter5.jpg"><div class="card-content"><h3>Cheese Corn Balls</h3><div class="price">₹150</div><button class="add-btn" onclick="addItem('Starter 5',150)">Add</button></div></div>
+
+<div class="card main"><img src="images/biryani.jpg"><div class="card-content"><h3>Veg Biryani</h3><div class="price">₹200</div><button class="add-btn" onclick="addItem('Veg Biryani',200)">Add</button></div></div>
+<div class="card main"><img src="images/paneer-butter.jpg"><div class="card-content"><h3>Paneer Butter Masala</h3><div class="price">₹220</div><button class="add-btn" onclick="addItem('Paneer Butter Masala',220)">Add</button></div></div>
+<div class="card main"><img src="images/dal-makhani.jpg"><div class="card-content"><h3>Dal Makhani</h3><div class="price">₹180</div><button class="add-btn" onclick="addItem('Dal Makhani',180)">Add</button></div></div>
+<div class="card main"><img src="images/chole.jpg"><div class="card-content"><h3>Chole Bhature</h3><div class="price">₹190</div><button class="add-btn" onclick="addItem('Chole Bhature',190)">Add</button></div></div>
+<div class="card main"><img src="images/main5.jpg"><div class="card-content"><h3>Butter Nana</h3><div class="price">₹200</div><button class="add-btn" onclick="addItem('Main 5',200)">Add</button></div></div>
+
+<div class="card fast"><img src="images/burger.jpg"><div class="card-content"><h3>Veg Burger</h3><div class="price">₹150</div><button class="add-btn" onclick="addItem('Veg Burger',150)">Add</button></div></div>
+<div class="card fast"><img src="images/fries.jpg"><div class="card-content"><h3>French Fries</h3><div class="price">₹100</div><button class="add-btn" onclick="addItem('French Fries',100)">Add</button></div></div>
+<div class="card fast"><img src="images/fast5.jpg"><div class="card-content"><h3>Garlic Bread</h3><div class="price">₹190</div><button class="add-btn" onclick="addItem('Garlic Bread',190)">Add</button></div></div>
+
+<div class="card dessert"><img src="images/cake.jpg"><div class="card-content"><h3>Chocolate Cake</h3><div class="price">₹140</div><button class="add-btn" onclick="addItem('Chocolate Cake',140)">Add</button></div></div>
+<div class="card dessert"><img src="images/icecream.jpg"><div class="card-content"><h3>Ice Cream</h3><div class="price">₹120</div><button class="add-btn" onclick="addItem('Ice Cream',120)">Add</button></div></div>
+<div class="card dessert"><img src="images/gulab.jpg"><div class="card-content"><h3>Gulab Jamun</h3><div class="price">₹100</div><button class="add-btn" onclick="addItem('Gulab Jamun',100)">Add</button></div></div>
+<div class="card dessert"><img src="images/brownie.jpg"><div class="card-content"><h3>Brownie</h3><div class="price">₹130</div><button class="add-btn" onclick="addItem('Brownie',130)">Add</button></div></div>
+<div class="card dessert"><img src="images/dessert5.jpg"><div class="card-content"><h3>Chocolate Parfait</h3><div class="price">₹160</div><button class="add-btn" onclick="addItem('Dessert 5',160)">Add</button></div></div>
+
+</div>
+
+<div class="bill">
+<h2>🧾 Bill</h2>
+<input id="tableNo" placeholder="Table Number">
+<div id="billItems"></div>
+<div class="total">Total: ₹<span id="total">0</span></div>
+<button class="submit" onclick="sendOrder()">Submit Order</button>
+<button class="clear" onclick="clearBill()">Clear</button>
+</div>
+</div>
+
+<script>
+let bill={},filter="all";
+function setFilter(f,b){filter=f;document.querySelectorAll(".controls button").forEach(x=>x.classList.remove("active"));b.classList.add("active");applyFilters()}
+function applyFilters(){let s=document.getElementById("search").value.toLowerCase();document.querySelectorAll(".card").forEach(c=>{let ok=(filter==="all"||c.classList.contains(filter))&&c.innerText.toLowerCase().includes(s);c.style.display=ok?"block":"none"})}
+function addItem(n,p){if(!bill[n]) bill[n]={price:p,qty:0};bill[n].qty++;renderBill()}
+function renderBill(){let d=document.getElementById("billItems"),t=0;d.innerHTML="";for(let i in bill){let x=bill[i];t+=x.price*x.qty;d.innerHTML+=`<div class="bill-item">${i}<div class="qty"><button onclick="chg('${i}',-1)">-</button>${x.qty}<button onclick="chg('${i}',1)">+</button></div></div>`}document.getElementById("total").innerText=t}
+function chg(i,v){bill[i].qty+=v;if(bill[i].qty<=0) delete bill[i];renderBill()}
+function clearBill(){bill={};renderBill()}
+function sendOrder(){let table=document.getElementById("tableNo").value.trim();if(!table||Object.keys(bill).length===0){alert("Enter table number and add items");return}let items=Object.entries(bill).map(([n,i])=>`${n} x${i.qty}`).join(", ");let total=document.getElementById("total").innerText;let url=`https://script.google.com/macros/s/AKfycbxKjychr7oMjrcoM5fTlhLq7RDJt0E77uKGNLcprCSe-PDqy8HAOeIS1qgsWIudQ0rn/exec?table=${table}&items=${encodeURIComponent(items)}&total=${total}`;fetch(url).then(()=>{alert("Order submitted");clearBill();document.getElementById("tableNo").value=""})}
+const obs=new IntersectionObserver(e=>e.forEach(x=>x.isIntersecting&&x.target.classList.add("show")));
+document.querySelectorAll(".card").forEach(c=>obs.observe(c));
+</script>
+
+</body>
+</html>
