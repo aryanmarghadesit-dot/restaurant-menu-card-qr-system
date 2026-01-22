@@ -23,9 +23,37 @@ header{
 }
 header h1{
   text-align:center;
-  font-size:24px
+  font-size:24px;
+    animation: tracking-in-expand-fwd 1s ease forwards;
 }
-.header-space{width:80px}
+.header-space{width:80px}@-webkit-keyframes tracking-in-expand-fwd {
+  0% {
+    letter-spacing: -0.5em;
+    -webkit-transform: translateZ(-700px);
+    transform: translateZ(-700px);
+    opacity: 0;
+  }
+  40% { opacity: 0.6; }
+  100% {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+@keyframes tracking-in-expand-fwd {
+  0% {
+    letter-spacing: -0.5em;
+    transform: translateZ(-700px);
+    opacity: 0;
+  }
+  40% { opacity: 0.6; }
+  100% {
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
 
 .controls{
   display:flex;
@@ -159,4 +187,5 @@ document.querySelectorAll(".card").forEach(c=>obs.observe(c));
 
 </body>
 </html>
+
 
